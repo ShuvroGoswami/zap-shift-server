@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // load environment variable from env file
 dotenv.config();
@@ -61,6 +61,14 @@ async function run() {
     res.status(500).send({ message: 'Failed to get parcels' }); // ✅ FIXED: .send not ._construct
   }
 });
+
+
+app.delete('/parcels/:id', async (req, res) => {
+  const id = req.params.id;
+  const result = await parcelCollection.deleteOne({ _id: new ObjectId(id) });
+  res.send(result); // { deletedCount: 1 }
+});
+
 
 
 
